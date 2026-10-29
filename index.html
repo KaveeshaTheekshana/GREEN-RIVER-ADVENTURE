@@ -13,12 +13,25 @@
 
       // -------------------------------------------------------------
       // 1. Authorized Live Host / Domain Configuration
-      // Set your official live production domain below (e.g. "kaveez.com")
+      // Automatically parses URLs, hostnames and supports GitHub Pages
       // -------------------------------------------------------------
+      function sanitizeHostname(val) {
+        if (!val) return "";
+        var str = val.trim().toLowerCase();
+        if (str.indexOf("://") !== -1) {
+          str = str.split("://")[1];
+        }
+        str = str.split("/")[0].split("?")[0].split("#")[0].split(":")[0];
+        return str;
+      }
+
       var PRIMARY_DOMAIN = "https://kaveeshatheekshana.github.io/GREEN-RIVER-ADVENTURE/";
+      var cleanPrimary = sanitizeHostname(PRIMARY_DOMAIN);
 
       var ALLOWED_HOSTS = [
-        PRIMARY_DOMAIN.toLowerCase(),
+        cleanPrimary,
+        "kaveeshatheekshana.github.io",
+        "github.io",
         "kaveez.com",
         "kaveesha.top",
         "greenriveradventure.com",
@@ -28,18 +41,20 @@
         "0.0.0.0"
       ];
 
-      var currentHost = (window.location.hostname || "").toLowerCase();
-      var currentProto = (window.location.protocol || "").toLowerCase();
+      var currentHost = (window.location.hostname || "").toLowerCase().trim();
+      var currentProto = (window.location.protocol || "").toLowerCase().trim();
 
       // Check if host is authorized or a safe local development / private LAN IP
       var isAuthorized = (
         currentProto === "file:" ||
         currentHost === "" ||
-        ALLOWED_HOSTS.indexOf(currentHost) !== -1 ||
-        (PRIMARY_DOMAIN && currentHost.endsWith("." + PRIMARY_DOMAIN.toLowerCase())) ||
-        /^192\.168\.\d+\.\d+$/.test(currentHost) ||
-        /^10\.\d+\.\d+\.\d+$/.test(currentHost) ||
-        /^172\.(1[6-9]|2\d|3[01])\.\d+\.\d+$/.test(currentHost)
+        currentHost.endsWith(".github.io") ||
+        ALLOWED_HOSTS.some(function (allowed) {
+          return allowed && (currentHost === allowed || currentHost.endsWith("." + allowed));
+        }) ||
+        /^192.168.d+.d+$/.test(currentHost) ||
+        /^10.d+.d+.d+$/.test(currentHost) ||
+        /^172.(1[6-9]|2d|3[01]).d+.d+$/.test(currentHost)
       );
 
       if (!isAuthorized) {
