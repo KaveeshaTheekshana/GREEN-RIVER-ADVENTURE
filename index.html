@@ -1735,30 +1735,12 @@
     .showcase-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.25) 0%, transparent 40%, rgba(15, 23, 42, 0.75) 100%);
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.15) 0%, transparent 40%, rgba(15, 23, 42, 0.75) 100%);
       display: flex;
       align-items: flex-end;
-      justify-content: space-between;
+      justify-content: flex-end;
       padding: 1.5rem;
       pointer-events: none;
-    }
-
-    .showcase-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.35);
-      padding: 6px 14px;
-      border-radius: var(--radius-full);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .showcase-preview-btn {
@@ -3620,10 +3602,240 @@
       transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
+  
+    /* ==========================================================================
+       Animated Brand Logo Preloader (Ultra-Premium, 60-120 FPS, 0 Jank)
+       ========================================================================== */
+    .app-preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      background: radial-gradient(circle at center, #ffffff 0%, #f0fdfa 55%, #e0f2fe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.55s ease;
+      will-change: opacity, visibility;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .app-preloader.fade-out {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .preloader-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1.5rem;
+      max-width: 380px;
+      width: 100%;
+    }
+
+    /* Pulsing Ripple Rings & Logo Box */
+    .preloader-logo-wrap {
+      position: relative;
+      width: 105px;
+      height: 105px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.35rem;
+    }
+
+    .preloader-pulse-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 30px;
+      background: linear-gradient(135deg, rgba(5, 150, 105, 0.35) 0%, rgba(2, 132, 199, 0.35) 100%);
+      animation: plRingPulse 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+      z-index: 1;
+    }
+
+    .preloader-pulse-ring.delay {
+      animation-delay: 0.75s;
+    }
+
+    .preloader-logo-box {
+      position: relative;
+      z-index: 2;
+      width: 82px;
+      height: 82px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 2px solid rgba(14, 165, 233, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 14px 30px rgba(2, 132, 199, 0.25),
+        0 0 20px rgba(16, 185, 129, 0.2);
+      animation: plLogoFloat 3s ease-in-out infinite alternate;
+    }
+
+    .preloader-logo-img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+
+    @keyframes plRingPulse {
+      0% {
+        transform: scale(0.85);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    @keyframes plLogoFloat {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        transform: translateY(-6px) scale(1.03);
+      }
+    }
+
+    /* Preloader Brand Typography */
+    .preloader-brand {
+      margin-bottom: 1.5rem;
+    }
+
+    .preloader-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      margin: 0 0 0.35rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .pl-green {
+      color: #059669;
+    }
+
+    .pl-river {
+      background: linear-gradient(90deg, #059669 0%, #0ea5e9 40%, #0284c7 75%, #059669 100%);
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: navWaterFlow 3s linear infinite;
+    }
+
+    .pl-dark {
+      color: #0f172a;
+    }
+
+    .preloader-sub {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      color: #059669;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* Preloader Progress Bar */
+    .preloader-progress-wrap {
+      width: 100%;
+      max-width: 260px;
+    }
+
+    .preloader-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: rgba(226, 232, 240, 0.85);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin-bottom: 0.55rem;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .preloader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #059669 0%, #0284c7 100%);
+      border-radius: var(--radius-full);
+      transition: width 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.6);
+    }
+
+    .preloader-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .preloader-pct {
+      color: #0284c7;
+      font-weight: 800;
+      font-family: monospace;
+      font-size: 0.78rem;
+    }
+
   </style>
+  <!-- High-Priority Image Preloading for Instant Experience -->
+  <link rel="preload" as="image" href="assets/images/logo.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="assets/images/hero-desktop.jpg" fetchpriority="high" media="(min-width: 769px)">
+  <link rel="preload" as="image" href="assets/images/hero-mobile.jpg" fetchpriority="high" media="(max-width: 768px)">
+  <link rel="preload" as="image" href="assets/images/image 10.jpeg">
+  <link rel="preload" as="image" href="assets/images/image 15.jpeg">
+
 </head>
 
 <body>
+
+  <!-- ==========================================================================
+       Animated Brand Logo Preloader Screen (Waits for all images to complete loading)
+       ========================================================================== -->
+  <div class="app-preloader" id="appPreloader" aria-live="polite">
+    <div class="preloader-inner">
+      <div class="preloader-logo-wrap">
+        <div class="preloader-pulse-ring"></div>
+        <div class="preloader-pulse-ring delay"></div>
+        <div class="preloader-logo-box">
+          <img src="assets/images/logo.webp" alt="Green River Adventure" class="preloader-logo-img">
+        </div>
+      </div>
+
+      <div class="preloader-brand">
+        <h2 class="preloader-title">
+          <span class="pl-green">GREEN</span>
+          <span class="pl-river">RIVER</span>
+          <span class="pl-dark">ADVENTURE</span>
+        </h2>
+        <p class="preloader-sub">SRI LANKA RAFTING • KITULGALA</p>
+      </div>
+
+      <div class="preloader-progress-wrap">
+        <div class="preloader-bar-bg">
+          <div class="preloader-bar-fill" id="preloaderBarFill"></div>
+        </div>
+        <div class="preloader-status-row">
+          <span class="preloader-status-text" id="preloaderStatusText">Loading Adventures...</span>
+          <span class="preloader-pct" id="preloaderPct">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Scroll Progress Indicator -->
   <div class="scroll-progress-bar" id="scrollProgressBar"></div>
@@ -3909,7 +4121,6 @@
           <div class="showcase-img-wrap">
             <img src="assets/images/image 15.jpeg" alt="SRI LANKA RAFTING Green River Adventure - Kitulgala" loading="lazy" decoding="async">
             <div class="showcase-overlay">
-              <span class="showcase-badge"><i class="fa-solid fa-camera"></i> Official Expedition Feature</span>
               <button type="button" class="showcase-preview-btn" onclick="event.stopPropagation(); openCardLightbox(this)" aria-label="View Full Image">
                 <i class="fa-solid fa-expand"></i> View Full Image
               </button>
@@ -4376,6 +4587,132 @@
      * SRI LANKA RAFTING Green River Adventure - Kitulgala
      * Main Clean Frontend Engine
      */
+
+    
+    // =============================================================
+    // 0. Cache & Version Control Engine
+    // Saves version cookies and updates browser cache when site updates
+    // =============================================================
+    const APP_BUILD_VERSION = "2.5.0";
+
+    (function initVersionAndCookies() {
+      try {
+        function getCookie(name) {
+          var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+          return match ? match[2] : null;
+        }
+
+        var savedVer = getCookie('gra_version') || localStorage.getItem('gra_version');
+
+        if (savedVer !== APP_BUILD_VERSION) {
+          // New version detected: update cookie (30 days) and storage
+          document.cookie = "gra_version=" + APP_BUILD_VERSION + "; path=/; max-age=2592000; SameSite=Lax";
+          localStorage.setItem('gra_version', APP_BUILD_VERSION);
+          localStorage.setItem('gra_last_cached', Date.now().toString());
+
+          // Clean legacy caches if supported
+          if ('caches' in window) {
+            caches.keys().then(function (names) {
+              names.forEach(function (name) {
+                if (name !== 'gra-v-' + APP_BUILD_VERSION) {
+                  caches.delete(name);
+                }
+              });
+            });
+          }
+        }
+      } catch (e) {}
+    })();
+
+    // =============================================================
+    // Automated Image Loading Tracker & Preloader Screen Engine
+    // Waits for all images on the page to completely load before reveal
+    // =============================================================
+    (function initImagePreloader() {
+      var preloader = document.getElementById('appPreloader');
+      var barFill = document.getElementById('preloaderBarFill');
+      var pctText = document.getElementById('preloaderPct');
+      var statusText = document.getElementById('preloaderStatusText');
+
+      if (!preloader) return;
+
+      document.body.style.overflow = 'hidden';
+
+      var allImgs = Array.prototype.slice.call(document.images);
+      var total = allImgs.length;
+      var loaded = 0;
+      var isFinished = false;
+
+      function updateProgress() {
+        var pct = total > 0 ? Math.min(100, Math.round((loaded / total) * 100)) : 100;
+        if (barFill) barFill.style.width = pct + '%';
+        if (pctText) pctText.innerText = pct + '%';
+
+        if (statusText) {
+          if (pct < 45) {
+            statusText.innerText = 'Loading River Views...';
+          } else if (pct < 85) {
+            statusText.innerText = 'Gathering Gear...';
+          } else {
+            statusText.innerText = 'Almost Ready...';
+          }
+        }
+
+        if (loaded >= total && !isFinished) {
+          finishPreloader();
+        }
+      }
+
+      function onSingleImageDone() {
+        loaded++;
+        updateProgress();
+      }
+
+      function finishPreloader() {
+        if (isFinished) return;
+        isFinished = true;
+
+        if (barFill) barFill.style.width = '100%';
+        if (pctText) pctText.innerText = '100%';
+        if (statusText) statusText.innerText = 'Ready For Adventure!';
+
+        setTimeout(function () {
+          preloader.classList.add('fade-out');
+          document.body.style.overflow = '';
+          document.body.classList.add('app-loaded');
+
+          setTimeout(function () {
+            if (preloader.parentNode) {
+              preloader.style.display = 'none';
+            }
+          }, 600);
+        }, 300);
+      }
+
+      if (total === 0) {
+        finishPreloader();
+        return;
+      }
+
+      // Check each image: if already cached/completed, count immediately
+      allImgs.forEach(function (img) {
+        if (img.complete && img.naturalWidth !== 0) {
+          loaded++;
+        } else {
+          img.addEventListener('load', onSingleImageDone, { once: true });
+          img.addEventListener('error', onSingleImageDone, { once: true });
+        }
+      });
+
+      updateProgress();
+
+      // Failsafe timeout: ensure user is never blocked on extremely poor mobile networks
+      setTimeout(function () {
+        if (!isFinished) {
+          finishPreloader();
+        }
+      }, 3600);
+    })();
 
     document.addEventListener('DOMContentLoaded', () => {
       initDynamicYear();
